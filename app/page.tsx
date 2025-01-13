@@ -2,7 +2,7 @@ import Grid from "@/components/Grid";
 import Hero from "@/components/Hero";
 import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNav";
-import { FaHome, FaUser, FaBriefcase, FaEnvelope } from "react-icons/fa";
+import { navItems } from "@/Data";
 
 export default function Home() {
   return (
@@ -12,12 +12,7 @@ export default function Home() {
     >
       <div className="max-w-7xl w-full">
         <FloatingNav
-          navItems={[
-            { name: "Home", link: "/", icon: <FaHome /> },
-            { name: "About", link: "/about", icon: <FaUser /> },
-            { name: "Work", link: "/work", icon: <FaBriefcase /> },
-            { name: "Contact", link: "/contact", icon: <FaEnvelope /> },
-          ]}
+          navItems={navItems}
         />
         <Hero />
         <Grid />
