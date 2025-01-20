@@ -1,5 +1,17 @@
 import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
+const isGithubActions = process.env.GITHUB_ACTIONS || false
+
+let assetPrefix = ''
+let basePath = ''
+
+if (isGithubActions) {
+    // Trim off `<owner>/`
+    const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '')
+    assetPrefix = `/${repo}/`
+    basePath = `/${repo}`
+}
+
 const nextConfig = {
     output: 'export',
     typescript: {
@@ -14,10 +26,21 @@ const nextConfig = {
         ],
         unoptimized: true,  // Add this if you're using static exports
     },
+    // Add these for GitHub Pages with your actual repo name
+    basePath: basePath,
+    assetPrefix: assetPrefix,
     // Add this to disable server components since we're doing static export
     experimental: {
         appDir: true,
-    }
+    },
+    // Add this to handle static files correctly
+    webpack: (config) => {
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            fs: false,
+        };
+        return config;
+    },
 };
 
 
