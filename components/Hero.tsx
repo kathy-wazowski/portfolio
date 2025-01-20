@@ -36,7 +36,7 @@ const Hero = () => {
           />
 
           <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-            Hi, I'm Kathy, a Frontend Developer based in China
+            Hi, I&apos;m Kathy, a Frontend Developer based in China
           </p>
 
           <a href="#about">

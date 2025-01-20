@@ -1,6 +1,16 @@
 "use client";
 import { cn } from "@/utils/cn";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+// Create a safe useEffect that only runs on client
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+const setBodyStyles = (styles: Record<string, string>) => {
+  if (typeof window === 'undefined') return;
+  Object.entries(styles).forEach(([property, value]) => {
+    document.body.style.setProperty(property, value);
+  });
+};
 
 export const BackgroundGradientAnimation = ({
   gradientBackgroundStart = "rgb(108, 0, 162)",
@@ -39,24 +49,21 @@ export const BackgroundGradientAnimation = ({
   const [curY, setCurY] = useState(0);
   const [tgX, setTgX] = useState(0);
   const [tgY, setTgY] = useState(0);
-  useEffect(() => {
-    document.body.style.setProperty(
-      "--gradient-background-start",
-      gradientBackgroundStart
-    );
-    document.body.style.setProperty(
-      "--gradient-background-end",
-      gradientBackgroundEnd
-    );
-    document.body.style.setProperty("--first-color", firstColor);
-    document.body.style.setProperty("--second-color", secondColor);
-    document.body.style.setProperty("--third-color", thirdColor);
-    document.body.style.setProperty("--fourth-color", fourthColor);
-    document.body.style.setProperty("--fifth-color", fifthColor);
-    document.body.style.setProperty("--pointer-color", pointerColor);
-    document.body.style.setProperty("--size", size);
-    document.body.style.setProperty("--blending-value", blendingValue);
-  }, []);
+  useIsomorphicLayoutEffect(() => {
+    setBodyStyles({
+      '--gradient-background-start': gradientBackgroundStart,
+      '--gradient-background-end': gradientBackgroundEnd,
+      '--first-color': firstColor,
+      '--second-color': secondColor,
+      '--third-color': thirdColor,
+      '--fourth-color': fourthColor,
+      '--fifth-color': fifthColor,
+      '--pointer-color': pointerColor,
+      '--size': size,
+      '--blending-value': blendingValue,
+    });
+  }, [gradientBackgroundStart, gradientBackgroundEnd, firstColor, secondColor,
+    thirdColor, fourthColor, fifthColor, pointerColor, size, blendingValue]);
 
   useEffect(() => {
     function move() {
