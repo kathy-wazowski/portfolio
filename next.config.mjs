@@ -29,9 +29,9 @@ const nextConfig = {
     // Add these for GitHub Pages with your actual repo name
     basePath: basePath,
     assetPrefix: assetPrefix,
-    // Add this to disable server components since we're doing static export
+    trailingSlash: true,
     experimental: {
-        appDir: true,
+        instrumentationHook: true
     },
     // Add this to handle static files correctly
     webpack: (config) => {
